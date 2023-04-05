@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import './component styles/home.css';
 import MazeCreator from "./MazeCreator";
 
-export default function (props) {
+export default function Home(props) {
     const [mazeCreator, setMazeCreator] = useState(false);
     const [appear, setappear] = useState(false);
     
@@ -31,6 +31,7 @@ export default function (props) {
                 {!mazeCreator ? <button className={appear ? 'create-maze-button create-maze-btn-appear':'create-maze-button'} onClick={handleClick}>Create Maze</button> : null}
                 {mazeCreator ? <MazeCreator closeMazeCreator={closeMazeCreator}></MazeCreator> : null}
             </div>
+            {/* <Matrix rows={3} columns={5}></Matrix> */}
         </>
     )
 }
