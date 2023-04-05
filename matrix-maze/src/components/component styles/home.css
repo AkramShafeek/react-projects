@@ -10,14 +10,19 @@ button.create-maze-button {
     height: 102px;
     border-style: none;
     border-radius: 17px;
-    color: rgba(203, 227, 250, 0.925);
+    color: #131c2b00;
     text-align: center;
     font-size: 2em;
-    box-shadow: 5px 5px 10px #0c121b, -5px -5px 10px #1a263b;
-    transition: all 100ms;
+    transition: all 200ms;
     font-family: 'Lato', sans-serif;
     font-weight: 700;
+    transform: translateY(-41px);
+}
+
+button.create-maze-btn-appear {
     transform: translateY(-45px);
+    box-shadow: 5px 5px 10px #0c121b, -5px -5px 10px #1a263b;
+    color: rgba(203, 227, 250, 0.925);
 }
 
 button.create-maze-button:hover {

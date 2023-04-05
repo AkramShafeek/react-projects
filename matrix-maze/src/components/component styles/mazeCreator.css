@@ -1,0 +1,13 @@
+#mazeCreator{
+    background-color: #4A56BD;
+    color: aliceblue;
+    width: 962px;
+    height: 766px;
+    border-radius: 14px;    
+}
+
+.appear-animation{
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 150ms ease-in-out;
+}
