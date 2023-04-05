@@ -1,0 +1,30 @@
+div.title {
+    width: 100%;
+    height: 135px;
+    padding-top: 6px;
+}
+
+button.create-maze-button {
+    background: #131C2B;
+    width: 366px;
+    height: 102px;
+    border-style: none;
+    border-radius: 17px;
+    color: rgba(203, 227, 250, 0.925);
+    text-align: center;
+    font-size: 2em;
+    box-shadow: 5px 5px 10px #0c121b, -5px -5px 10px #1a263b;
+    transition: all 100ms;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    transform: translateY(-45px);
+}
+
+button.create-maze-button:hover {
+    cursor: pointer;
+}
+
+button.create-maze-button:active {
+    transform: translateY(-41px);
+    box-shadow: none;
+}

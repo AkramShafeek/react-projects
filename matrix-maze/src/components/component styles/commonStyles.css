@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+
+.background {
+    background-color: #131C2B;
+    height: 100vh;
+}
+
+.title {
+    color: aliceblue;
+    font-family: 'Lato', sans-serif;
+}
+
+.large{
+    font-size: 3em;
+}
+
+.letter-spacing-large{
+    letter-spacing: 65px;
+}
+
+.d-flex{
+    display: flex;
+}
+
+.flex-column{
+    flex-direction: column;
+}
+
+.justify-content-center{
+    justify-content: center;
+}
+
+.align-items-center{
+    align-items: center;
+}
