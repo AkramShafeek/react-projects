@@ -27,6 +27,7 @@ export default function Matrix(props) {
             matrixData[i] = row;
         }
         setMatrixDataState(matrixData);
+        props.sendMatrixData(matrixData);
     }, [props.rows, props.columns])
 
 
@@ -51,7 +52,7 @@ export default function Matrix(props) {
         matrixData[r][c] = !matrixData[r][c];
 
         setMatrixDataState(matrixData)
-
+        props.sendMatrixData(matrixData);
         // console.log(matrixData)
     }
 
@@ -69,7 +70,8 @@ export default function Matrix(props) {
     for (let i = 0; i < rows; i++) {
         let cells = [];
         for (let j = 0; j < columns; j++) {
-            cells.push(<div className="cell" onClick={handleCellClick} style={cellStyles} r={i} c={j} key={j}></div>);
+            let id = `(${i},${j})`
+            cells.push(<div className="cell" onClick={handleCellClick} style={cellStyles} r={i} c={j} key={j} id={id}></div>);
         }
         let row = <div className='row d-flex justify-content-center align-items-center' style={rowStyles} key={i}>{cells}</div>
         matrix.push(row)
