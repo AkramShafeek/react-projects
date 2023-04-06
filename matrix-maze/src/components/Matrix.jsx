@@ -1,21 +1,34 @@
+import { useState, useEffect } from 'react';
 import './component styles/commonStyles.css'
 import './component styles/matrix.css'
+
 export default function Matrix(props) {
 
-    var matrixData = [];
-    console.log(props.rows)
-    console.log(props.columns)
-    for(let i = 0;i<props.rows;i++)
-    {
-        let row = [];
-        for(let j = 0;j<props.columns;j++)
-        {
-            row[j] = true
-        }
-        matrixData[i] = row;
-    }
+    const [rows, setRows] = useState(props.rows)
+    const [columns, setColumns] = useState(props.columns)
+    const [matrixDataState, setMatrixDataState] = useState([[true]]);
 
-    console.log(matrixData)
+    var matrixData = []; 
+
+    useEffect(() => {
+        console.log('use effect called')
+        setRows(props.rows)
+        setColumns(props.columns)
+        for (let i = 0; i < props.rows; i++) {
+            let row = [];
+            for (let j = 0; j < props.columns; j++) {
+                if (matrixDataState !== undefined && matrixDataState[i] !== undefined && matrixDataState[i][j] !== undefined) {    
+                    row[j] = matrixDataState[i][j]    
+                }
+                else {        
+                    row[j] = true
+                }
+            }
+            matrixData[i] = row;
+        }
+        setMatrixDataState(matrixData);
+    }, [props.rows, props.columns])
+
 
     function handleCellClick(event) {
 
@@ -33,13 +46,16 @@ export default function Matrix(props) {
 
         let r = Number.parseInt(cell.getAttribute('r'))
         let c = Number.parseInt(cell.getAttribute('c'))
-        
-        matrixData[r][c] = !matrixData[r][c];        
 
-        console.log(matrixData)
+        matrixData = matrixDataState
+        matrixData[r][c] = !matrixData[r][c];
+
+        setMatrixDataState(matrixData)
+
+        // console.log(matrixData)
     }
-    
-    const cellStyles = {
+
+    var cellStyles = {
         backgroundColor: 'rgb(247, 247, 247)',
         transform: 'rotateY(0deg)',
         width: '100%',
@@ -48,19 +64,19 @@ export default function Matrix(props) {
     const rowStyles = {
         height: '25px'
     }
-    
+
     let matrix = [];
-    for (let i = 0; i < props.rows; i++) {
+    for (let i = 0; i < rows; i++) {
         let cells = [];
-        for (let j = 0; j < props.columns; j++) {
-            cells.push(<div className="cell" onClick={handleCellClick} key={j} style={cellStyles} r={i} c={j}></div>);
+        for (let j = 0; j < columns; j++) {
+            cells.push(<div className="cell" onClick={handleCellClick} style={cellStyles} r={i} c={j} key={j}></div>);
         }
-        let row = <div className='row d-flex justify-content-center align-items-center' key={i} style={rowStyles}>{cells}</div>
+        let row = <div className='row d-flex justify-content-center align-items-center' style={rowStyles} key={i}>{cells}</div>
         matrix.push(row)
     }
 
     return (
-        <div className='matrix d-flex flex-column justify-content-center align-items-center'>
+        <div className='matrix d-flex flex-column justify-content-center align-items-center'>            
             {matrix}
         </div>
     );
