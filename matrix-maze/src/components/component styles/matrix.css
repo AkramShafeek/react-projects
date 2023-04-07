@@ -1,7 +1,7 @@
 div.cell {
     max-width: 25px;
     max-height: 25px;
-    transition: transform 600ms, background-color 600ms;
+    transition: transform 80ms, background-color 600ms;
     box-sizing: border-box;
 }
 

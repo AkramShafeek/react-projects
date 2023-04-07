@@ -38,68 +38,92 @@ export default function MazeCreator(props) {
 
     function getMatrixData(newMatrixData) {
         setMatrixData(newMatrixData);
-    }    
+    }
 
-    function addCellToSolution(id){
+    function addCellToSolution(id) {
         let cell = document.getElementById(id);
         cell.style.backgroundColor = '#5fe245fd';
     }
-    function removeCellFromSolution(id){
+    function removeCellFromSolution(id) {
         let cell = document.getElementById(id);
         cell.style.backgroundColor = '#64dd4c73'
     }
-    
+    function pause(){
+        return new Promise((resolve)=>{
+            setTimeout(()=>{
+                resolve('continue');
+            },100)
+        })
+    }
+
     var rMove = [0, 1, 0, -1];
     var cMove = [1, 0, -1, 0];
 
     function backtrackingSolver(i, j, visited, path) {
+        return new Promise(async (resolve, reject) => {
+            // console.log(i, j)
+            // console.log('recursion called')
 
-        console.log('recursion called')
+            // out of bounds condition
+            if (i >= rows || i < 0) {
+                resolve(false);
+                return;
+                // console.log('resolved')
+            }
+            if (j >= columns || j < 0) {
+                resolve(false);
+                return;
+                // console.log('resolved')
+            }
 
-        // out of bounds condition
-        if (i >= rows || i < 0)
-            return false;
-        if (j >= columns || j < 0)
-            return false;
-
-        // already visited cell condition
-        if (visited[i * columns + j])
-            return false;
-
-        // blocked cell condition
-        if (!matrixData[i][j])
-            return false;
-
-        // solved condition
-        if (i === rows - 1 && j === columns - 1) {
-            addCellToSolution(`(${i},${j})`);
-            path.push(`(${i},${j})`);
-            return true;
-        }
-
-        visited[i * columns + j] = true;
-
-        let r,c,k;
-
-        for (k = 0; k < 4; k++) {
-            r = i + rMove[k];
-            c = j + cMove[k];
-            if (backtrackingSolver(r, c, visited, path)) {
+            // already visited cell condition
+            if (visited[i * columns + j]) {
+                resolve(false);
+                return;
+            }
+            // blocked cell condition
+            if (!matrixData[i][j]) {
+                resolve(false);
+                return;
+            }
+            // solved condition
+            if (i === rows - 1 && j === columns - 1) {
                 addCellToSolution(`(${i},${j})`);
                 path.push(`(${i},${j})`);
-                return true;
+                resolve(true);
+                return;
             }
-            else
-                continue;
-        }
-        path.pop();
-        removeCellFromSolution(`(${i},${j})`);
-        return false;
+            
+            visited[i * columns + j] = true;
+            addCellToSolution(`(${i},${j})`);
+
+            let r, c, k;
+
+            for (k = 0; k < 4; k++) {
+                r = i + rMove[k];
+                c = j + cMove[k];
+
+                await pause();
+
+                if (await backtrackingSolver(r, c, visited, path)) {
+                    console.log('returned where it started')
+                    path.push(`(${i},${j})`);
+                    resolve(true);
+                    return;
+                }
+
+                // console.log('at the end of for loop')
+            }
+            path.pop();
+            removeCellFromSolution(`(${i},${j})`);
+            resolve(false);
+            return;
+        })
     }
-    function solveMaze() {
+    async function solveMaze() {
         let path = [];
         let visited = [];
-        if (backtrackingSolver(0, 0, visited, path))
+        if (await backtrackingSolver(0, 0, visited, path))
             console.log(path);
         else
             console.log('couldnt solve maze')
