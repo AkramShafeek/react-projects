@@ -48,11 +48,11 @@ export default function MazeCreator(props) {
         let cell = document.getElementById(id);
         cell.style.backgroundColor = '#64dd4c73'
     }
-    function pause(){
-        return new Promise((resolve)=>{
-            setTimeout(()=>{
+    function pause() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
                 resolve('continue');
-            },100)
+            }, 100)
         })
     }
 
@@ -77,7 +77,7 @@ export default function MazeCreator(props) {
             }
 
             // already visited cell condition
-            if (visited[i * columns + j]) {
+            if (visited[`(${i},${j})`]) {
                 resolve(false);
                 return;
             }
@@ -93,8 +93,9 @@ export default function MazeCreator(props) {
                 resolve(true);
                 return;
             }
-            
-            visited[i * columns + j] = true;
+            visited[`(${i},${j})`] = true;
+            // visited[i * columns + j] = true;
+            console.log('visited ' + `(${i},${j})`)
             addCellToSolution(`(${i},${j})`);
 
             let r, c, k;
@@ -120,13 +121,78 @@ export default function MazeCreator(props) {
             return;
         })
     }
+
+    async function bfsSolver() {
+        let i = 0;
+        let j = 0;
+        let bfsQueue = [];
+        let visited = {};
+        
+        bfsQueue.push({ r: i, c: j });
+        visited[`(0,0)`] = true;
+        
+        while (bfsQueue.length) {
+            let pos = bfsQueue.shift();
+            await pause();
+            addCellToSolution(`(${pos.r},${pos.c})`)
+            console.log('visited ' + `(${pos.r},${pos.c})`)
+            // console.log(visited)
+            //check for its neighbors
+            for (let k = 0; k < 4; k++) {
+                let r = pos.r + rMove[k];
+                let c = pos.c + cMove[k];
+                // out of bounds condition
+
+                if (r >= rows || r < 0) {
+                    // resolve(false);
+                    continue;
+                    // console.log('resolved')
+                }
+                else if (c >= columns || c < 0) {
+                    // resolve(false);
+                    continue;
+                    // console.log('resolved')
+                }
+                
+                // already visited cell condition
+                else if (visited[`(${r},${c})`]) {
+                    // resolve(false);
+                    // console.log('')                    
+                    console.log('already visited ' + `(${r},${c})`)
+                    continue;
+                }
+
+                // blocked cell condition
+                else if (!matrixData[r][c]) {
+                    // resolve(false);
+                    continue;
+                }
+                // solved condition
+                else if (r === rows - 1 && c === columns - 1) {
+                    addCellToSolution(`(${r},${c})`);
+                    // resolve(true);
+                    break;
+                }
+                else {
+                    console.log('adding to queue: ' + `(${r},${c})`)
+                    visited[`(${r},${c})`] = true;
+                    bfsQueue.push({r:r,c:c})
+                }
+            }
+        }
+        console.log (visited)
+    }
+
     async function solveMaze() {
         let path = [];
-        let visited = [];
+        let visited = {};
         if (await backtrackingSolver(0, 0, visited, path))
             console.log(path);
         else
             console.log('couldnt solve maze')
+
+        console.log(visited);
+        // bfsSolver();
     }
 
 
