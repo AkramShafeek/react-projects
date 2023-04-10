@@ -3,6 +3,7 @@ div.cell {
     max-height: 25px;
     transition: transform 80ms, background-color 600ms;
     box-sizing: border-box;
+    color: black;
 }
 
 div.row {

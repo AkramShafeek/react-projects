@@ -122,61 +122,119 @@ export default function MazeCreator(props) {
         })
     }
 
+    function addValueToCell(id, value){
+        document.getElementById(id).value = value;
+        // document.getElementById(id).innerHTML = value;
+    }
+
+    function getPath(){
+        let path = [];
+        let bfsQueue = [];
+        let visited = {};
+
+        bfsQueue.push({ r: rows-1, c: columns-1});
+        path.push(`(${rows-1},${columns-1})`);
+        visited[`(${rows-1},${columns-1})`] = true;
+        
+        while (bfsQueue.length) {
+            let pos = bfsQueue.shift();
+            let currCell = document.getElementById(`(${pos.r},${pos.c})`);
+
+            //check for its neighbors
+            for (let k = 0; k < 4; k++) {
+                let r = pos.r + rMove[k];
+                let c = pos.c + cMove[k];
+
+                // out of bounds condition
+                if (r >= rows || r < 0) {
+                    continue;
+                }
+                else if (c >= columns || c < 0) {
+                    continue;
+                }
+                
+                // blocked cell condition
+                else if (!matrixData[r][c]) {
+                    continue;
+                }
+
+                // already visited cell condition
+                else if(visited[`(${r},${c})`]){
+                    continue;
+                }
+
+                else if (document.getElementById(`(${r},${c})`).value == Number.parseInt(currCell.value) - 1) {
+                    path.push(`(${r},${c})`);
+                    bfsQueue.push({ r: r, c: c});
+                    visited[`(${r},${c})`] = true;
+                }                
+            }
+        }
+
+        return path;
+    }
+
+    async function colorPath(path){
+        while(path.length){
+            let cell = path.pop();
+            await pause()
+            document.getElementById(cell).style.backgroundColor = '#5fe245fd';
+        }
+    }
+
     async function bfsSolver() {
         let i = 0;
         let j = 0;
         let bfsQueue = [];
         let visited = {};
         
-        bfsQueue.push({ r: i, c: j });
+        bfsQueue.push({ r: i, c: j, value: 0});
         visited[`(0,0)`] = true;
+        addValueToCell(`(0,0)`,0)
         
         while (bfsQueue.length) {
             let pos = bfsQueue.shift();
-            await pause();
-            addCellToSolution(`(${pos.r},${pos.c})`)
-            console.log('visited ' + `(${pos.r},${pos.c})`)
-            // console.log(visited)
+            let value = pos.value + 1;
+
             //check for its neighbors
             for (let k = 0; k < 4; k++) {
                 let r = pos.r + rMove[k];
                 let c = pos.c + cMove[k];
-                // out of bounds condition
 
+                // out of bounds condition
                 if (r >= rows || r < 0) {
-                    // resolve(false);
                     continue;
-                    // console.log('resolved')
                 }
                 else if (c >= columns || c < 0) {
-                    // resolve(false);
                     continue;
-                    // console.log('resolved')
                 }
                 
                 // already visited cell condition
                 else if (visited[`(${r},${c})`]) {
-                    // resolve(false);
-                    // console.log('')                    
-                    console.log('already visited ' + `(${r},${c})`)
                     continue;
                 }
 
                 // blocked cell condition
                 else if (!matrixData[r][c]) {
-                    // resolve(false);
                     continue;
                 }
+
                 // solved condition
                 else if (r === rows - 1 && c === columns - 1) {
-                    addCellToSolution(`(${r},${c})`);
-                    // resolve(true);
+                    // add cell to visited
+                    visited[`(${r},${c})`] = true;
+                    // add value to cell
+                    addValueToCell(`(${r},${c})`,value)
+
                     break;
                 }
                 else {
-                    console.log('adding to queue: ' + `(${r},${c})`)
+                    // add cell to visited
                     visited[`(${r},${c})`] = true;
-                    bfsQueue.push({r:r,c:c})
+                    // add value to cell
+                    addValueToCell(`(${r},${c})`,value)
+                    // push cell to queue
+                    bfsQueue.push({r:r,c:c,value:value})
                 }
             }
         }
@@ -184,15 +242,17 @@ export default function MazeCreator(props) {
     }
 
     async function solveMaze() {
-        let path = [];
-        let visited = {};
-        if (await backtrackingSolver(0, 0, visited, path))
-            console.log(path);
-        else
-            console.log('couldnt solve maze')
+        // let path = [];
+        // let visited = {};
+        // if (await backtrackingSolver(0, 0, visited, path))
+        //     console.log(path);
+        // else
+        //     console.log('couldnt solve maze')
 
-        console.log(visited);
-        // bfsSolver();
+        // console.log(visited);
+        bfsSolver();
+        let path = getPath();
+        colorPath(path);
     }
 
 
