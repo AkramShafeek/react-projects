@@ -11,7 +11,6 @@ export default function Matrix(props) {
     var matrixData = []; 
 
     useEffect(() => {
-        console.log('use effect called')
         setRows(props.rows)
         setColumns(props.columns)
         for (let i = 0; i < props.rows; i++) {
