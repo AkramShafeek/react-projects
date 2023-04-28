@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import './App.css'
 
 function App() {
   const counter = useSelector((state) => state.counter);
@@ -10,7 +11,7 @@ function App() {
   const decrement = () => {
     dispatch({ type: 'DEC' });
   };
-  
+
   return (
     <div>
       <h1>Counter app</h1>
