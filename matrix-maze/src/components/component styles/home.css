@@ -2,6 +2,27 @@ div.title {
     width: 100%;
     height: 135px;
     padding-top: 6px;
+    font-size: 3em;
+    letter-spacing: 65px;
+}
+
+@media only screen and (max-width: 1040px) {
+    div.title {
+        width: 100%;
+        height: 135px;
+        padding-top: 6px;
+        font-size: 2em;
+        letter-spacing: 55px;
+    }
+}
+@media only screen and (max-width: 840px) {
+    div.title {
+        width: 100%;
+        height: 135px;
+        padding-top: 6px;
+        font-size: 1.5em;
+        letter-spacing: 15px;
+    }
 }
 
 button.create-maze-button {
@@ -16,11 +37,14 @@ button.create-maze-button {
     transition: all 200ms;
     font-family: 'Lato', sans-serif;
     font-weight: 700;
-    transform: translateY(-41px);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 button.create-maze-btn-appear {
-    transform: translateY(-45px);
+    transform: translate(-50%, -50%);
     box-shadow: 5px 5px 10px #0c121b, -5px -5px 10px #1a263b;
     color: rgba(203, 227, 250, 0.925);
 }
@@ -30,6 +54,6 @@ button.create-maze-button:hover {
 }
 
 button.create-maze-button:active {
-    transform: translateY(-41px);
+    transform: translate(-50%, -50%);
     box-shadow: none;
 }

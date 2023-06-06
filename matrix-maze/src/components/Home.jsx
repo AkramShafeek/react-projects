@@ -26,8 +26,8 @@ export default function Home(props) {
 
     return (
         <>
-            <div className="title letter-spacing-large large d-flex justify-content-center align-items-center">MATRIX MAZE</div>
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
+            <div className="title d-flex justify-content-center align-items-center">MATRIX MAZE</div>
+            <div style={{ minHeight: '100%' }} className="d-flex justify-content-center">
                 {!mazeCreator ? <button className={appear ? 'create-maze-button create-maze-btn-appear':'create-maze-button'} onClick={handleClick}>Create Maze</button> : null}
                 {mazeCreator ? <MazeCreator closeMazeCreator={closeMazeCreator}></MazeCreator> : null}
             </div>

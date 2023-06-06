@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './component styles/mazeCreator.css'
 import './component styles/commonStyles.css'
+import './component styles/switch.css'
 import dfsSolver from './utils/dfsSolver';
 import bfsSolver from './utils/bfsSolver';
 import getPath from './utils/getPath';
@@ -12,17 +13,20 @@ export default function MazeCreator(props) {
     const [rows, setRows] = useState(1);
     const [columns, setcolumns] = useState(1);
     const [matrixData, setMatrixData] = useState(null);
+    const [solved, setSolved] = useState(false);
+    const [isBfs, setIsBfs] = useState(true);
 
     function updateMatrixData(newMatrixData) {
         setMatrixData(newMatrixData);
+        console.log(newMatrixData)
     }
 
     function updateRows(event) {
-        if (event.target.value > 0 && event.target.value <= 15)
+        if (event.target.value >= 0 && event.target.value <= 15)
             setRows(event.target.value)
     }
     function updateColumns(event) {
-        if (event.target.value > 0 && event.target.value <= 20)
+        if (event.target.value >= 0 && event.target.value <= 20)
             setcolumns(event.target.value)
     }
 
@@ -41,6 +45,7 @@ export default function MazeCreator(props) {
 
     function getMatrixData(newMatrixData) {
         setMatrixData(newMatrixData);
+        console.log(newMatrixData);
     }
 
     function addCellToSolution(id) {
@@ -76,19 +81,29 @@ export default function MazeCreator(props) {
     }
 
     async function solveMaze() {
+        if (rows == 0 || columns == 0)
+            return;
+
+        setSolved(true);
 
         let visited = {};
         let path = [];
 
-        // depth first search solution
-        // dfsSolver(0, 0, visited, path, addCellToSolution, removeCellFromSolution, rows, columns, matrixData, pause)
-
         // breadth first search solution
-        bfsSolver(addValueToCell,rows,columns,matrixData);
-        path = getPath(rows,columns,matrixData);
-        colorPath(path);
+        if (isBfs) {
+            bfsSolver(addValueToCell, rows, columns, matrixData);
+            path = getPath(rows, columns, matrixData);
+            colorPath(path);
+        }
+        // depth first search solution
+        else if (!isBfs) {
+            dfsSolver(0, 0, visited, path, addCellToSolution, removeCellFromSolution, rows, columns, matrixData, pause)
+        }
     }
 
+    function reset() {
+        window.location.reload(true);
+    }
 
     return (
         <div id="mazeCreator" className='appear-animation d-flex flex-column justify-content-center align-items-center gap-20' style={scale}>
@@ -104,9 +119,14 @@ export default function MazeCreator(props) {
             <div className='matrixContainer d-flex justify-content-center align-items-center'>
                 <Matrix rows={rows} columns={columns} callback={updateMatrixData} sendMatrixData={getMatrixData}></Matrix>
             </div>
+            <div className='d-flex gap-20'>
+                <p>BFS</p>
+                <input type="checkbox" id="switch" onChange={() => setIsBfs(!isBfs)} /><label htmlFor="switch"></label>
+                <p>DFS</p>
+            </div>
             <div className='d-flex justify-content-center align-items-center gap-20'>
                 <button onClick={closeMazeCreator} className='cancel'>Cancel</button>
-                <button className='create' onClick={solveMaze}>Solve</button>
+                <button className='create' onClick={solved ? reset : solveMaze}>{solved ? 'Reset' : 'Solve'}</button>
             </div>
         </div>
     )

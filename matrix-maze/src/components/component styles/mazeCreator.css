@@ -11,8 +11,11 @@
     box-shadow: 5px 5px 10px #0c121b, -5px -5px 10px #1a263b;
     color: aliceblue;
     width: 962px;
-    height: 80vh;
+    height: fit-content;
     border-radius: 14px;    
+    display: flex;
+    padding: 30px 10px;
+    margin-top: 40px;
 }
 
 .appear-animation{

@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 
-.background {
+body,
+html {
+    height: 100%;
     background-color: #131C2B;
-    height: 100vh;
+}
+
+.background {
+    height: 100%;
 }
 
 .title {
@@ -10,30 +15,30 @@
     font-family: 'Lato', sans-serif;
 }
 
-.large{
+.large {
     font-size: 3em;
 }
 
-.letter-spacing-large{
+.letter-spacing-large {
     letter-spacing: 65px;
 }
 
-.d-flex{
+.d-flex {
     display: flex;
 }
 
-.flex-column{
+.flex-column {
     flex-direction: column;
 }
 
-.justify-content-center{
+.justify-content-center {
     justify-content: center;
 }
 
-.align-items-center{
+.align-items-center {
     align-items: center;
 }
 
-.gap-20{
+.gap-20 {
     gap: 20px;
 }
